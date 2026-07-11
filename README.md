@@ -143,43 +143,6 @@ event: error
 data: {"error": "..."}
 ```
 
----
-
-## CRM Fields
-
-| Field | Description |
-|---|---|
-| `created_at` | Lead creation date/time |
-| `name` | Full name |
-| `email` | Primary email |
-| `country_code` | Country code (e.g. `+91`) |
-| `mobile_without_country_code` | Local number digits only |
-| `company` | Company/organisation |
-| `city` | City |
-| `state` | State |
-| `country` | Country |
-| `lead_owner` | Assigned agent/rep |
-| `crm_status` | `GOOD_LEAD_FOLLOW_UP` · `DID_NOT_CONNECT` · `BAD_LEAD` · `SALE_DONE` |
-| `crm_note` | Notes, follow-ups, extra emails/phones |
-| `data_source` | One of five allowed project sources |
-| `possession_time` | Property possession timeframe (real estate) |
-| `description` | Additional descriptive info |
-
----
-
-## AI Prompt Design
-
-The extraction prompt is intentionally **defensive by default**:
-
-- Tells the model to respond with **only** a JSON array — no prose, no markdown fences
-- Each output object must include `row_index` (copied from input) so results survive out-of-order batches or partial failures
-- `crm_status` and `data_source` are **restricted to allowed enum values** at both the prompt level and in the Zod validator — the model cannot invent new values
-- `crm_note` absorbs overflow: extra emails, extra phones, remarks, any useful spillover
-- Rows with neither email nor phone are explicitly skipped with a `skip_reason`
-- Post-processing strips any stray newlines from field values so every record stays a valid single CSV row
-
----
-
 ## Configuration
 
 All tuning lives in `backend/src/config/constants.ts` and can be overridden via environment variables:
@@ -224,6 +187,3 @@ Test files are in `sample-csvs/`:
 
 ---
 
-## Position
-
-Applying for: **Full-Time**
